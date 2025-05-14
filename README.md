@@ -194,6 +194,10 @@ target_pointer_width="32"
 target_vendor="unknown"
 ```
 
+List dependency graph and features, e.g.
+```bash
+cargo tree --edges normal,features --target riscv32im-unknown-none-elf -f '{p} {f}' -i getrandom@0.2.16
+```
 
 ## Resolved issues
 ### error[E0432]: unresolved imports `core::sync::atomic::AtomicI64` in radium-0.70

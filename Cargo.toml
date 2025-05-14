@@ -4,8 +4,20 @@ members = ["guest", "host"]
 default-members = ["host"]
 
 [workspace.dependencies]
-jolt-sdk = { git = "https://github.com/a16z/jolt" }
+# Dependencies for revm
+getrandom = { version = "0.2.16", default-features = false }
+secp256k1 = { version = "0.30.0", default-features = false }
+revm = { version = "23.1.0", default-features = false }
+once_cell = { version = "1.21.3", default-features = false }
+critical-section = { version = "1.2.0", default-features = false }
+portable-atomic = { version = "1.11.0", default-features = false }
+serde = { version = "1.0.219", default-features = false }
+
+# Dependencies for jolt-sdk
 ark-serialize = "0.5.0"
+jolt-sdk = { git = "https://github.com/a16z/jolt" }
+
+# Dependencies for revm-guest
 revm-guest = { path = "./guest" }
 
 [profile.release]
@@ -18,4 +30,4 @@ ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-op
 ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev = "3fdd72f3286110b1958f020b984999326190f42f" }
-secp256k1 = { git = "https://github.com/sp1-patches/rust-secp256k1", tag = "patch-0.30.0-sp1-4.2.0" }
+serde = { git = "https://github.com/serde-rs/serde", rev = "49d098debdf8b5c38bfb6868f455c6ce542c422c" }

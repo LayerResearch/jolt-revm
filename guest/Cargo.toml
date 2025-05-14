@@ -8,6 +8,9 @@ guest = []
 
 [dependencies]
 jolt-sdk = { workspace = true }
-revm = { version = "20.0.0", features = ["secp256k1", "serde", "portable"], default-features = false}
-
-
+revm = { workspace = true, features = ["serde"] }
+getrandom = { workspace = true, features = ["custom"] }
+once_cell = { workspace = true, features = ["critical-section"] }
+portable-atomic = { workspace = true, features = ["critical-section"] }
+critical-section = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
