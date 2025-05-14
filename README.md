@@ -8,21 +8,7 @@ The project consists of two parts:
 
 ## Prerequisites
 
-Run the following commands to install the required packages(required to build RISCV GNU toolchain):
-```bash
-apt-get update && apt-get install build-essential clang libclang-dev gawk texinfo bison flex libgmp-dev libmpfr-dev libmpc-dev
-```
 
-Build RISCV GNU toolchain(required to build secp256k1):
-```bash
-mkdir -p /opt/riscv
-export RISCV_GNU_TOOLCHAIN=/opt/riscv
-
-cd /tmp
-git clone https://github.com/riscv-collab/riscv-gnu-toolchain && cd riscv-gnu-toolchain
-./configure --prefix="$RISCV_GNU_TOOLCHAIN" --with-arch=rv32im --with-abi=ilp32
-make -j$(nproc)
-```
 ## Build Host
 
 ```bash
@@ -208,6 +194,7 @@ target_pointer_width="32"
 target_vendor="unknown"
 ```
 
+
 ## Resolved issues
 ### error[E0432]: unresolved imports `core::sync::atomic::AtomicI64` in radium-0.70
 radium 0.7.1 is at [3fdd72f3286110b1958f020b984999326190f42f](https://github.com/ferrilab/ferrilab/blob/3fdd72f3286110b1958f020b984999326190f42f/radium/Cargo.toml). 
@@ -221,4 +208,28 @@ radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev
 ```toml
 [patch.crates-io]
 secp256k1 = { git = "https://github.com/sp1-patches/rust-secp256k1", tag = "patch-0.30.0-sp1-4.2.0" }
+```
+
+### build RISCV GNU toolchain (Optional)
+Run the following commands to install the required packages(required to build RISCV GNU toolchain):
+```bash
+apt-get update && apt-get install build-essential clang libclang-dev gawk texinfo bison flex libgmp-dev libmpfr-dev libmpc-dev
+```
+
+Build RISCV GNU toolchain(required to build secp256k1):
+```bash
+mkdir -p /opt/riscv
+export RISCV_GNU_TOOLCHAIN=/opt/riscv
+
+cd /tmp
+git clone https://github.com/riscv-collab/riscv-gnu-toolchain && cd riscv-gnu-toolchain
+./configure --prefix="$RISCV_GNU_TOOLCHAIN" --with-arch=rv32im --with-abi=ilp32
+make -j$(nproc)
+```
+
+### link with OpenSSL (Optional)
+Install OpenSSL development package and pkg-config (required to link OpenSSL)
+
+```
+apt-get update && apt-get install libssl-dev pkg-config
 ```
