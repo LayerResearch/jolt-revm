@@ -720,6 +720,7 @@ version = "1.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 dependencies = [
+ "portable-atomic",
  "serde",
 ]
 
@@ -843,8 +844,7 @@ dependencies = [
 [[package]]
 name = "const-hex"
 version = "1.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4b0485bab839b018a8f1723fc5391819fea5f8f0f32288ef8a735fd096b6160c"
+source = "git+https://github.com/LayerResearch/const-hex?rev=cbd10b557ac1278b13afe6f48b2d03d702fa6016#cbd10b557ac1278b13afe6f48b2d03d702fa6016"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -1171,6 +1171,12 @@ dependencies = [
  "subtle",
  "zeroize",
 ]
+
+[[package]]
+name = "embedded-hal"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "361a90feb7004eca4019fb28352a9465666b24f840f5c3cddf0ff13920590b89"
 
 [[package]]
 name = "embedded-io"
@@ -2602,9 +2608,8 @@ checksum = "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5"
 
 [[package]]
 name = "radium"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09"
+version = "0.7.1"
+source = "git+https://github.com/ferrilab/ferrilab?rev=3fdd72f3286110b1958f020b984999326190f42f#3fdd72f3286110b1958f020b984999326190f42f"
 
 [[package]]
 name = "rand"
@@ -2812,8 +2817,7 @@ dependencies = [
 [[package]]
 name = "revm"
 version = "23.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df1eb83c8652836bc0422f9a144522179134d8befcc7ab595c1ada60dac39e51"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "revm-bytecode",
  "revm-context",
@@ -2831,8 +2835,7 @@ dependencies = [
 [[package]]
 name = "revm-bytecode"
 version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a052afe63f2211d0b8be342ba4eff04b143be4bc77c2a96067ab6b90a90865d7"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "bitvec",
  "once_cell",
@@ -2844,8 +2847,7 @@ dependencies = [
 [[package]]
 name = "revm-context"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bcd6faa992a1a10b84723326d6117203764c040d3519fd1ba34950d049389eb7"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "cfg-if",
  "derive-where",
@@ -2860,8 +2862,7 @@ dependencies = [
 [[package]]
 name = "revm-context-interface"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c2b42cac141cd388c38db420d3d18e7b23013c5747d5ed648d2d9a225263d51"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "alloy-eip2930",
  "alloy-eip7702",
@@ -2876,8 +2877,7 @@ dependencies = [
 [[package]]
 name = "revm-database"
 version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a16e1a58d5614bef333402ae8682d0ea7ba4f4b0563b3a58a6c0ad9d392db4f6"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "alloy-eips",
  "revm-bytecode",
@@ -2890,8 +2890,7 @@ dependencies = [
 [[package]]
 name = "revm-database-interface"
 version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6839eb2e1667d3acd9cba59f77299fae8802c229fae50bc6f0435ed4c4ef398e"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "auto_impl",
  "revm-primitives",
@@ -2903,20 +2902,20 @@ dependencies = [
 name = "revm-guest"
 version = "0.1.0"
 dependencies = [
+ "bytes",
  "critical-section",
- "getrandom 0.2.16",
  "jolt-sdk",
  "once_cell",
  "portable-atomic",
  "revm",
+ "riscv",
  "serde",
 ]
 
 [[package]]
 name = "revm-handler"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "511e50a8c7f14e97681ec96266ee53bf8316c0dea1d4a6633ff6f37c5c0fe9d0"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "auto_impl",
  "revm-bytecode",
@@ -2941,8 +2940,7 @@ dependencies = [
 [[package]]
 name = "revm-inspector"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9f6c88fcf481f8e315bfd87377aa0ae83e1159dd381430122cbf431474ce39c"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "auto_impl",
  "revm-context",
@@ -2957,8 +2955,7 @@ dependencies = [
 [[package]]
 name = "revm-interpreter"
 version = "19.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0b7d75106333808bc97df3cd6a1864ced4ffec9be28fd3e459733813f3c300e"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "revm-bytecode",
  "revm-context-interface",
@@ -2969,8 +2966,7 @@ dependencies = [
 [[package]]
 name = "revm-precompile"
 version = "20.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a06769068a34fd237c74193118530af3912e1b16922137a96fc302f29c119966"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "ark-bls12-381",
  "ark-bn254",
@@ -2989,8 +2985,7 @@ dependencies = [
 [[package]]
 name = "revm-primitives"
 version = "19.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86d8369df999a4d5d7e53fd866c43a19d38213a00e1c86f72b782bbe7b19cb30"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "alloy-primitives 1.1.0",
  "num_enum",
@@ -3000,8 +2995,7 @@ dependencies = [
 [[package]]
 name = "revm-state"
 version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ac26c71bf0fe5a9cd9fe6adaa13487afedbf8c2ee6e228132eae074cb3c2b58"
+source = "git+https://github.com/LayerResearch/revm?rev=8d302e0c4608a3ca9e4319065d28be1a067277ae#8d302e0c4608a3ca9e4319065d28be1a067277ae"
 dependencies = [
  "bitflags",
  "revm-bytecode",
@@ -3041,6 +3035,36 @@ checksum = "bd124222d17ad93a644ed9d011a40f4fb64aa54275c08cc216524a9ea82fb09f"
 dependencies = [
  "digest 0.10.7",
 ]
+
+[[package]]
+name = "riscv"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afa3cdbeccae4359f6839a00e8b77e5736caa200ba216caf38d24e4c16e2b586"
+dependencies = [
+ "critical-section",
+ "embedded-hal",
+ "paste",
+ "riscv-macros",
+ "riscv-pac",
+]
+
+[[package]]
+name = "riscv-macros"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8c4aa1ea1af6dcc83a61be12e8189f9b293c3ba5a487778a4cd89fb060fdbbc"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.101",
+]
+
+[[package]]
+name = "riscv-pac"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8188909339ccc0c68cfb5a04648313f09621e8b87dc03095454f1a11f6c5d436"
 
 [[package]]
 name = "rlp"
@@ -3278,7 +3302,7 @@ dependencies = [
 [[package]]
 name = "serde"
 version = "1.0.219"
-source = "git+https://github.com/serde-rs/serde?rev=49d098debdf8b5c38bfb6868f455c6ce542c422c#49d098debdf8b5c38bfb6868f455c6ce542c422c"
+source = "git+https://github.com/LayerResearch/serde?rev=5e4dce74da3b9ac15abd7896c88229cc580ace82#5e4dce74da3b9ac15abd7896c88229cc580ace82"
 dependencies = [
  "serde_derive",
 ]
@@ -3286,7 +3310,7 @@ dependencies = [
 [[package]]
 name = "serde_derive"
 version = "1.0.219"
-source = "git+https://github.com/serde-rs/serde?rev=49d098debdf8b5c38bfb6868f455c6ce542c422c#49d098debdf8b5c38bfb6868f455c6ce542c422c"
+source = "git+https://github.com/LayerResearch/serde?rev=5e4dce74da3b9ac15abd7896c88229cc580ace82#5e4dce74da3b9ac15abd7896c88229cc580ace82"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4476,8 +4500,3 @@ dependencies = [
  "quote",
  "syn 2.0.101",
 ]
-
-[[patch.unused]]
-name = "radium"
-version = "0.7.1"
-source = "git+https://github.com/ferrilab/ferrilab?rev=3fdd72f3286110b1958f020b984999326190f42f#3fdd72f3286110b1958f020b984999326190f42f"

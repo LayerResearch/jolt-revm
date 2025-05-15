@@ -1,5 +1,12 @@
 #![cfg_attr(feature = "guest", no_std)]
 #![no_main]
 
+use revm_guest as guest;
+
+/// This is required to resolve `undefined reference to `_critical_section_1_0_acquire'`
+#[cfg(target_arch = "riscv32")]
 #[allow(unused_imports)]
-use revm_guest::*;
+use riscv as _;
+
+#[allow(unused_imports)]
+use guest::*;

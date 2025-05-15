@@ -9,8 +9,11 @@ guest = []
 [dependencies]
 jolt-sdk = { workspace = true }
 revm = { workspace = true, features = ["serde"] }
-getrandom = { workspace = true, features = ["custom"] }
 once_cell = { workspace = true, features = ["critical-section"] }
 portable-atomic = { workspace = true, features = ["critical-section"] }
 critical-section = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
+bytes = { workspace = true, features = ["extra-platforms"]}
+
+[target.'cfg(target_arch = "riscv32")'.dependencies]
+riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }

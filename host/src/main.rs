@@ -1,4 +1,3 @@
-use std::time::Instant;
 use revm_guest as guest;
 pub fn main() {
     let target_dir = "/tmp/jolt-guest-targets";
