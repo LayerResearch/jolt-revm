@@ -22,6 +22,9 @@ jolt-sdk = { git = "https://github.com/a16z/jolt" }
 # Dependencies for revm-guest
 revm-guest = { path = "./guest" }
 
+# misc
+spinners = "4.1.1"
+
 [profile.release]
 debug = 1
 codegen-units = 1

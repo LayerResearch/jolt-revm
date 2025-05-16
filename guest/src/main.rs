@@ -1,5 +1,5 @@
 #![cfg_attr(feature = "guest", no_std)]
-#![no_main]
+#![cfg_attr(target_arch = "riscv32", no_main)]
 
 use revm_guest as guest;
 

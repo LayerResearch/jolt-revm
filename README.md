@@ -8,18 +8,23 @@ The project consists of two parts:
 
 ## Prerequisites
 
+## Test provable functions
+To run tests for the provable functions in the guest program:
+```bash
+cargo test -p revm-guest
+```
 
 ## Build Host
-
 ```bash
 cargo build --release
 ```
 
 ## Build Guest
+To build the guest program and generate/verify proofs:
 ```bash
-./target/release/revm-host 
+./target/release/revm-host
 ```
-or
+or build only the guest program without generating proofs:
 ```bash
 CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
 cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
