@@ -12,8 +12,9 @@ once_cell = { version = "1.21.3", default-features = false }
 critical-section = { version = "1.2.0", default-features = false }
 portable-atomic = { version = "1.11.0", default-features = false }
 serde = { version = "1.0.219", default-features = false }
-const-hex = { version = "1.14.0", default-features = false }
+const-hex = { version = "1.14.1", default-features = false }
 bytes = { version = "1.10.1", default-features = false }
+alloy-rlp = { version = "0.3.12", default-features = false }
 
 # Dependencies for jolt-sdk
 ark-serialize = "0.5.0"
@@ -36,5 +37,4 @@ ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-op
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev = "3fdd72f3286110b1958f020b984999326190f42f" }
 serde = { git = "https://github.com/LayerResearch/serde", rev = "5e4dce74da3b9ac15abd7896c88229cc580ace82" } # https://github.com/serde-rs/serde/pull/2924
-const-hex = { git = "https://github.com/LayerResearch/const-hex", rev = "cbd10b557ac1278b13afe6f48b2d03d702fa6016" } # https://github.com/DaniPopes/const-hex/pull/20
 revm = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521

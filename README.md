@@ -55,6 +55,7 @@ cargo tree --edges normal,features --target riscv32im-unknown-none-elf -f '{p} {
 - https://github.com/serde-rs/serde/pull/2924
 - https://github.com/DaniPopes/const-hex/pull/20
 - https://github.com/paradigmxyz/revmc/pull/100
+- https://github.com/alloy-rs/rlp/pull/37
 
 ### error[E0432]: unresolved imports `core::sync::atomic::AtomicI64` in radium-0.70
 radium 0.7.1 is at [3fdd72f3286110b1958f020b984999326190f42f](https://github.com/ferrilab/ferrilab/blob/3fdd72f3286110b1958f020b984999326190f42f/radium/Cargo.toml). 
