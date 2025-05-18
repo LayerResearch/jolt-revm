@@ -22,12 +22,16 @@ cargo build --release
 ## Build Guest
 To build the guest program and generate/verify proofs:
 ```bash
-./target/release/revm-host
+RUST_BACKTRACE=full ./target/release/revm-host
 ```
 or build only the guest program without generating proofs:
 ```bash
 CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
 cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
+```
+For simplicity, you can combine these commands in one line:
+```bash
+cargo clean && clear && cargo test -p revm-guest && cargo build --release && RUST_BACKTRACE=full ./target/release/revm-host
 ```
 
 ## Troubleshooting
@@ -48,6 +52,17 @@ target_vendor="unknown"
 List dependency graph and features, e.g.
 ```bash
 cargo tree --edges normal,features --target riscv32im-unknown-none-elf -f '{p} {f}' -i getrandom@0.2.16
+```
+
+Dump the disassembly of the guest program to analyze the generated RISC-V code
+```
+llvm-objdump-14 -d /tmp/jolt-guest-targets/revm-guest/riscv32im-unknown-none-elf/release/revm-guest > revm-guest.disasm
+```
+
+UNIX-like reverse engineering framework and command-line toolset
+```
+git clone https://github.com/radareorg/radare2
+radare2/sys/install.sh
 ```
 
 ## Resolved issues
