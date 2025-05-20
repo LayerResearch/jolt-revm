@@ -37,5 +37,3 @@ ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-op
 ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev = "3fdd72f3286110b1958f020b984999326190f42f" }
-serde = { git = "https://github.com/LayerResearch/serde", rev = "5e4dce74da3b9ac15abd7896c88229cc580ace82" } # https://github.com/serde-rs/serde/pull/2924
-revm = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521
