@@ -26,6 +26,12 @@ revm-guest = { path = "./guest" }
 # misc
 spinners = "4.1.1"
 
+[profile.dev]
+debug = 2
+opt-level = 0
+codegen-units = 1
+lto = false
+
 [profile.release]
 debug = 2
 opt-level = 0
