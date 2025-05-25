@@ -24,9 +24,10 @@ To build the guest program and generate/verify proofs:
 ```bash
 RUST_BACKTRACE=full ./target/release/revm-host
 ```
-or build only the guest program without generating proofs:
+or build only the guest program without generating proofs, need to specify JOLT_FUNC_NAME if there are multiple provable in the guest program:
 ```bash
 CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
+JOLT_FUNC_NAME=exec \
 cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
 ```
 For simplicity, you can combine these commands in one line:
