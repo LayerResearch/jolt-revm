@@ -1,13 +1,15 @@
-#![cfg_attr(feature = "guest", no_std)]
+#![cfg_attr(any(feature = "guest", feature = "no-jolt"), no_std)]
+
 use jolt_sdk as jolt;
 
+use core::option::Option::None;
 use revm::{
     context::{BlockEnv, TxEnv},
     Context, ExecuteEvm, MainBuilder, MainContext,
 };
 
-#[jolt::provable]
-fn fib(n: u32) -> u128 {
+#[cfg_attr(not(feature = "no-jolt"), jolt::provable)]
+pub fn fib(n: u32) -> u128 {
     let mut a: u128 = 0;
     let mut b: u128 = 1;
     let mut sum: u128;
@@ -20,8 +22,8 @@ fn fib(n: u32) -> u128 {
     b
 }
 
-#[jolt::provable]
-fn exec(_n: u32) -> u128 {
+#[cfg_attr(not(feature = "no-jolt"), jolt::provable)]
+pub fn exec(_n: u32) -> u128 {
     use revm::{
         database::{CacheDB, EmptyDB},
         primitives::{address, keccak256, Bytes, TxKind, U256},

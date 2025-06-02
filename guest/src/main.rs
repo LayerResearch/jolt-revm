@@ -1,5 +1,7 @@
-#![cfg_attr(feature = "guest", no_std)]
+#![cfg_attr(any(feature = "guest", feature = "no-jolt"), no_std)]
 #![cfg_attr(target_arch = "riscv32", no_main)]
+
+mod riscv32im;
 
 use revm_guest as guest;
 
@@ -10,3 +12,10 @@ use riscv as _;
 
 #[allow(unused_imports)]
 use guest::*;
+
+#[cfg(feature = "no-jolt")]
+#[no_mangle]
+pub extern "C" fn main() -> i32 {
+    let result = exec(0);
+    0
+}

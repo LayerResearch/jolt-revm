@@ -5,6 +5,7 @@ edition = "2021"
 
 [features]
 guest = []
+no-jolt = []
 
 [dependencies]
 jolt-sdk = { workspace = true }
@@ -14,6 +15,8 @@ portable-atomic = { workspace = true, features = ["critical-section"] }
 critical-section = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 bytes = { workspace = true, features = ["extra-platforms"]}
+embedded-alloc = { version = "0.6.0", default-features = false, features = ["llff"] }
+htif = { workspace = true }
 
 [target.'cfg(target_arch = "riscv32")'.dependencies]
 riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }
