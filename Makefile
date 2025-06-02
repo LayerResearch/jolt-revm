@@ -15,7 +15,8 @@ bootstrap: ## Install required dependencies
 	gh release download spike-1.1.1 --repo LayerResearch/jolt-revm --pattern "spike-1.1.1-Linux-aarch64.tar.gz" -O /tmp/spike.tar.gz && tar -xzf /tmp/spike.tar.gz -C /usr/local/bin/
 
 build-spike: ## Build the guest binary to run in Spike
-	CARGO_PROFILE_RELEASE_LTO=false CARGO_ENCODED_RUSTFLAGS="-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld" \
+	CARGO_PROFILE_RELEASE_LTO=false \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld') \
 	cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
 
 clean-spike: ## Clean the build artifacts
@@ -43,7 +44,7 @@ test-guest: ## Test the guest binary on the building host
 	cargo nextest run -p revm-guest
 
 build-jolt: ## Build the guest binary with Jolt
-	CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
 	JOLT_FUNC_NAME=exec \
 	cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
 
