@@ -6,15 +6,19 @@ help:
 
 bootstrap: ## Install required dependencies
 	git config --global --add safe.directory $(shell pwd)/
-	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler && apt-get clean && rm -rf /var/lib/apt/lists/*
 	cargo install cargo-nextest
-	gh release download spike-1.1.1 --repo LayerResearch/jolt-riscv-arch-test --pattern "spike-1.1.1-Linux-aarch64.tar.gz" -O /tmp/spike.tar.gz && tar -xzf /tmp/spike.tar.gz -C /usr/local/bin/ && rm -rf /tmp/*
+	@if ! gh auth status >/dev/null 2>&1; then \
+		echo "GitHub authentication required. Please login:"; \
+		gh auth login; \
+	fi
+	gh release download spike-1.1.1 --repo LayerResearch/jolt-revm --pattern "spike-1.1.1-Linux-aarch64.tar.gz" -O /tmp/spike.tar.gz && tar -xzf /tmp/spike.tar.gz -C /usr/local/bin/
 
-build-spike: ## Build the RISC-V target to run in Spike
+build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false CARGO_ENCODED_RUSTFLAGS="-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld" \
 	cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
 
-clean-spike: ## Clean the RISC-V build artifacts
+clean-spike: ## Clean the build artifacts
 	cargo clean -p revm-guest --target riscv32im-unknown-none-elf
 
 inspect-spike: ## Inspect the built binary (size, sections, symbols)
@@ -33,10 +37,10 @@ build-host: ## Build the host binary
 	cargo build -p revm-host --release
 
 run-jolt: build-host ## Run the guest binary with Jolt
-	./target/release/revm-host
+	RUST_BACKTRACE=full ./target/release/revm-host
 
 test-guest: ## Test the guest binary on the building host
-	cargo nextest run -p revm-guest --release
+	cargo nextest run -p revm-guest
 
 build-jolt: ## Build the guest binary with Jolt
 	CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
@@ -44,10 +48,10 @@ build-jolt: ## Build the guest binary with Jolt
 	cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
 
 test-host: ## Test the host binary
-	cargo nextest run -p revm-host --release
+	RUST_BACKTRACE=full cargo nextest run -p revm-host --no-capture
 
 ci: ## Run the CI pipeline
 	make bootstrap
 	make test-guest
+	make run-spike
 	make test-host
-	make run-spike	

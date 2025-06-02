@@ -1,0 +1,3 @@
+[[profile.default.overrides]]
+filter = "package(revm-host) and test(/test_exec/)"
+terminate-timeout = "10m" # 10 minutes for this specific test

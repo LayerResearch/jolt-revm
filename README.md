@@ -7,57 +7,53 @@ The project consists of two parts:
 - A host program that compiles the guest code
 
 ## Prerequisites
+```bash
+make bootstrap
+```
 
 ## Test provable functions
 To run tests for the provable functions in the guest program:
 ```bash
-cargo test -p revm-guest
+make test-guest
 ```
 
 ## Build Host
 ```bash
-cargo build --release
+make build-host
 ```
 
-## Build Guest
-To build the guest program and generate/verify proofs:
+## Run Guest
+To run the guest program and generate/verify proofs:
 ```bash
 RUST_BACKTRACE=full ./target/release/revm-host
 ```
 or build only the guest program without generating proofs, need to specify JOLT_FUNC_NAME if there are multiple provable in the guest program:
 ```bash
-CARGO_ENCODED_RUSTFLAGS=$'-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z' \
-JOLT_FUNC_NAME=exec \
-cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
+make build-jolt
 ```
 For simplicity, you can combine these commands in one line:
 ```bash
-cargo clean && clear && cargo test -p revm-guest && cargo build --release && RUST_BACKTRACE=full ./target/release/revm-host
+make ci
 ```
 
 ## Run with Spike
 Rustup components availability tool: https://rust-lang.github.io/rustup-components-history/
 
 ```bash
-cargo clean --target riscv32im-unknown-none-elf
+make clean-spike
 ```
 
 ```bash
-CARGO_PROFILE_RELEASE_LTO=false CARGO_ENCODED_RUSTFLAGS="-Clink-arg=-T$(pwd)/guest/riscv32im-unknown-none-elf.ld" \
-cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
+make build-spike
 ```
 
 check the ELF headers:
 ```bash
-readelf -hl ./target/riscv32im-unknown-none-elf/release/revm-guest
-```
-
-```
-nm ./target/riscv32im-unknown-none-elf/release/revm-guest
+make inspect-spike
 ```
 
 ```bash
-spike --isa=rv32im ./target/riscv32im-unknown-none-elf/release/revm-guest
+make run-spike
 ```
 
 ## Troubleshooting
