@@ -72,3 +72,13 @@ fn main() {
     println!("Transaction Execution");
     exec();
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_exec() {
+        exec();
+    }
+}

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["guest", "host"]
+members = ["guest", "host", "htif"]
 default-members = ["host"]
 
 [workspace.dependencies]
@@ -15,6 +15,7 @@ serde = { version = "1.0.219", default-features = false }
 const-hex = { version = "1.14.1", default-features = false }
 bytes = { version = "1.10.1", default-features = false }
 alloy-rlp = { version = "0.3.12", default-features = false }
+htif = { path = "./htif" }
 
 # Dependencies for jolt-sdk
 ark-serialize = "0.5.0"
@@ -37,6 +38,7 @@ debug = 2
 opt-level = 0
 codegen-units = 1
 lto = false
+strip = false
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }

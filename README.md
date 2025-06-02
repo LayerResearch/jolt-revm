@@ -35,6 +35,31 @@ For simplicity, you can combine these commands in one line:
 cargo clean && clear && cargo test -p revm-guest && cargo build --release && RUST_BACKTRACE=full ./target/release/revm-host
 ```
 
+## Run with Spike
+Rustup components availability tool: https://rust-lang.github.io/rustup-components-history/
+
+```bash
+cargo clean --target riscv32im-unknown-none-elf
+```
+
+```bash
+CARGO_PROFILE_RELEASE_LTO=false CARGO_ENCODED_RUSTFLAGS="-Clink-arg=-T$(pwd)/guest/riscv32im-unknown-none-elf.ld" \
+cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
+```
+
+check the ELF headers:
+```bash
+readelf -hl ./target/riscv32im-unknown-none-elf/release/revm-guest
+```
+
+```
+nm ./target/riscv32im-unknown-none-elf/release/revm-guest
+```
+
+```bash
+spike --isa=rv32im ./target/riscv32im-unknown-none-elf/release/revm-guest
+```
+
 ## Troubleshooting
 ```bash
 > rustc --print cfg --target=riscv32im-unknown-none-elf
