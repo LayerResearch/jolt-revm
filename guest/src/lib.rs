@@ -22,42 +22,12 @@ pub fn fib(n: u32) -> u128 {
     b
 }
 
+mod utils;
 #[cfg_attr(not(feature = "no-jolt"), jolt::provable)]
 pub fn exec(_n: u32) -> u128 {
-    use revm::{
-        database::{CacheDB, EmptyDB},
-        primitives::{address, keccak256, Bytes, TxKind, U256},
-        state::AccountInfo,
-    };
-
-    let mut cache = CacheDB::new(EmptyDB::default());
-    let one_ether = U256::from(10_000_000_000_000_000_000u128);
-    let account = AccountInfo {
-        nonce: 0_u64,
-        balance: one_ether,
-        code_hash: keccak256(Bytes::new()),
-        code: None,
-    };
-    let sender = address!("0000000000000000000000000000000000000080");
-    let receiver = address!("0000000000000000000000000000000000000081");
-    cache.insert_account_info(sender, account);
-
-    let mut tx = TxEnv::default();
-    tx.caller = sender;
-    tx.kind = TxKind::Call(receiver);
-    tx.value = U256::from(0_500_000_000u128);
-    tx.gas_limit = 100_000u64;
-    tx.gas_price = 1_000_000_000u128;
-    tx.nonce = 0_u64;
-
-    let mut revm = Context::mainnet()
-        .with_db(cache)
-        .with_block(BlockEnv::default())
-        .with_tx(&tx)
-        .build_mainnet();
-
-    let result = revm.replay();
-    result.is_ok().into()
+    use utils::test;
+    test();
+    0
 }
 
 #[cfg(test)]

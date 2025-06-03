@@ -17,5 +17,5 @@ use guest::*;
 #[no_mangle]
 pub extern "C" fn main() -> i32 {
     let result = exec(0);
-    0
+    result as i32
 }

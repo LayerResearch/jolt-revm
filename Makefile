@@ -17,7 +17,7 @@ bootstrap: ## Install required dependencies
 build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld') \
-	cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
+	cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt --features=$(TESTER)
 
 clean-spike: ## Clean the build artifacts
 	cargo clean -p revm-guest --target riscv32im-unknown-none-elf
@@ -27,7 +27,7 @@ inspect-spike: ## Inspect the built binary (size, sections, symbols)
 	readelf -hl ./target/riscv32im-unknown-none-elf/release/revm-guest
 	nm ./target/riscv32im-unknown-none-elf/release/revm-guest | grep -E '(tohost|fromhost)'
 
-run-spike: build-spike ## Run the binary in Spike emulator
+run-spike:
 	spike --isa=rv32im ./target/riscv32im-unknown-none-elf/release/revm-guest
 
 lint: ## Fix linting errors
@@ -56,3 +56,4 @@ ci: ## Run the CI pipeline
 	make test-guest
 	make run-spike
 	make test-host
+
