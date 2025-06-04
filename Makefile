@@ -16,19 +16,19 @@ bootstrap: ## Install required dependencies
 
 build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
-	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld') \
-	RUSTFLAGS="-Awarnings" cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt --features=$(TESTER) 2>/dev/null
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv64imac-unknown-none-elf.ld') \
+	cargo build -p revm-guest --release --target riscv64imac-unknown-none-elf --features no-jolt --features=$(TESTER) --verbose
 
 clean-spike: ## Clean the build artifacts
-	cargo clean -p revm-guest --target riscv32im-unknown-none-elf
+	cargo clean -p revm-guest --target riscv64imac-unknown-none-elf
 
 inspect-spike: ## Inspect the built binary (size, sections, symbols)
-	ls -lah ./target/riscv32im-unknown-none-elf/release/revm-guest
-	readelf -hl ./target/riscv32im-unknown-none-elf/release/revm-guest
-	nm ./target/riscv32im-unknown-none-elf/release/revm-guest | grep -E '(tohost|fromhost)'
+	ls -lah ./target/riscv64imac-unknown-none-elf/release/revm-guest
+	readelf -hl ./target/riscv64imac-unknown-none-elf/release/revm-guest
+	nm ./target/riscv64imac-unknown-none-elf/release/revm-guest | grep -E '(tohost|fromhost)'
 
 run-spike:
-	spike --isa=rv32im -l ./target/riscv32im-unknown-none-elf/release/revm-guest 2>&1 | wc -l
+	spike --isa=rv64imac -l ./target/riscv64imac-unknown-none-elf/release/revm-guest 2>&1 | tee spike.log
 
 lint: ## Fix linting errors
 	cargo clippy --fix --allow-dirty --allow-staged -- -D warnings
@@ -46,7 +46,7 @@ test-guest: ## Test the guest binary on the building host
 build-jolt: ## Build the guest binary with Jolt
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T/tmp/jolt-guest-linkers/revm-guest.ld\x1f-Cpasses=lower-atomic\x1f-Cpanic=abort\x1f-Cstrip=symbols\x1f-Copt-level=z') \
 	JOLT_FUNC_NAME=exec \
-	cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv32im-unknown-none-elf
+	cargo build --release --features guest -p revm-guest --target-dir /tmp/jolt-guest-targets/revm-guest/ --target riscv64imac-unknown-none-elf
 
 test-host: ## Test the host binary
 	RUST_BACKTRACE=full cargo nextest run -p revm-host --no-capture

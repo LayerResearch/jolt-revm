@@ -58,7 +58,7 @@ make run-spike
 
 ## Troubleshooting
 ```bash
-> rustc --print cfg --target=riscv32im-unknown-none-elf
+> rustc --print cfg --target=riscv64imac-unknown-none-elf
 debug_assertions
 panic="abort"
 target_abi=""
@@ -73,12 +73,12 @@ target_vendor="unknown"
 
 List dependency graph and features, e.g.
 ```bash
-cargo tree --edges normal,features --target riscv32im-unknown-none-elf -f '{p} {f}' -i getrandom@0.2.16
+cargo tree --edges normal,features --target riscv64imac-unknown-none-elf -f '{p} {f}' -i getrandom@0.2.16
 ```
 
 Dump the disassembly of the guest program to analyze the generated RISC-V code
 ```
-llvm-objdump-14 -d /tmp/jolt-guest-targets/revm-guest/riscv32im-unknown-none-elf/release/revm-guest > revm-guest.disasm
+llvm-objdump-14 -d /tmp/jolt-guest-targets/revm-guest/riscv64imac-unknown-none-elf/release/revm-guest > revm-guest.disasm
 ```
 
 UNIX-like reverse engineering framework and command-line toolset

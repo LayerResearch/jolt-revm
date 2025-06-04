@@ -37,7 +37,7 @@ bytes = { workspace = true, features = ["extra-platforms"]}
 embedded-alloc = { version = "0.6.0", default-features = false, features = ["llff"] }
 htif = { workspace = true }
 
-[target.'cfg(target_arch = "riscv32")'.dependencies]
+[target.'cfg(target_arch = "riscv64")'.dependencies]
 riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }
 
 [dev-dependencies]
