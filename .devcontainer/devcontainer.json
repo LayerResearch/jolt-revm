@@ -11,8 +11,9 @@
 			"installZsh": true,
 			"configureZshAsDefaultShell": true,
 			"installOhMyZsh": true,
-			"installOhMyZshConfig": true,
+			"installOhMyZshConfig": false,
 			"upgradePackages": false,
+			// username should be root and installOhMyZshConfig should be false to avoid overwriting .zshrc in the base image
 			"username": "root"
 		}
 	},
