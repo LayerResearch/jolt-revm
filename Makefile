@@ -5,18 +5,7 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 bootstrap: ## Install required dependencies
-	git config --global --add safe.directory $(shell pwd)/
-	cargo install cargo-nextest	
-
-	apt-get update && apt-get install -y --no-install-recommends gh device-tree-compiler
-
-	@if ! gh auth status >/dev/null 2>&1; then \
-		echo "GitHub authentication required. Please login:"; \
-		gh auth login; \
-	fi
-	mkdir -p /opt/riscv/
-	gh release download --clobber spike-1.1.1 --repo LayerResearch/jolt-revm --pattern "spike-1.1.1-$(shell uname -s)-$(shell uname -m).tar.gz" -O /tmp/spike.tar.gz && tar -xzf /tmp/spike.tar.gz -C /opt/riscv/
-	gh release download --clobber sail-riscv-0.7 --repo LayerResearch/jolt-revm --pattern "sail-riscv-0.7-$(shell uname -s)-$(shell uname -m).tar.gz" -O /tmp/sail.tar.gz && tar -xzf /tmp/sail.tar.gz -C /opt/riscv/
+	scripts/bootstrap
 
 build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
