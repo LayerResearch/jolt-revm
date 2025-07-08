@@ -22,7 +22,7 @@ fn htif_send(device: u64, cmd: u64, payload: u64) {
     unsafe {
         core::ptr::write_volatile(
             &raw mut tohost,
-            ((device & 0xFFFF) << 48) | ((cmd & 0xFFFF) << 32) | (payload & 0xFFFF_FFFF),
+            ((device & 0xFF) << 56) | ((cmd & 0xFF) << 48) | (payload & 0xFFFF_FFFF_FFFF),
         );
     }
 }
@@ -44,6 +44,19 @@ pub fn htif_exit(code: u32) -> ! {
 /// Write a single byte to the HTIF console
 pub fn htif_console_putchar(ch: u8) {
     htif_send(HTIF_DEVICE_CONSOLE, HTIF_CMD_PUTCHAR, ch as u64);
+    // Wait for the host to process the command (tohost will be cleared)
+    htif_wait_for_completion();
+}
+
+
+fn htif_wait_for_completion() {
+    unsafe {
+        // Wait until tohost is cleared by the host
+        while core::ptr::read_volatile(&raw const tohost) != 0 {
+            // Busy wait or yield if in a cooperative environment
+            core::hint::spin_loop();
+        }
+    }
 }
 
 /// Perform a syscall with the given payload
