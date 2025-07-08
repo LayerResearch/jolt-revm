@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["guest", "host", "htif"]
+members = ["guest", "host", "htif", "bins/statetest-measure"]
 default-members = ["host"]
 
 [workspace.dependencies]
@@ -8,17 +8,26 @@ default-members = ["host"]
 getrandom = { version = "0.2.16", default-features = false }
 secp256k1 = { version = "0.30.0", default-features = false }
 revm = { version = "23.1.0", default-features = false }
+revm-statetest-types = { version = "4.1.0", default-features = false }
+revm-bytecode = { version = "4.0.0", default-features = false }
 once_cell = { version = "1.21.3", default-features = false }
 critical-section = { version = "1.2.0", default-features = false }
 portable-atomic = { version = "1.11.0", default-features = false }
 serde = { version = "1.0.219", default-features = false }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 const-hex = { version = "1.14.1", default-features = false }
 bytes = { version = "1.10.1", default-features = false }
 alloy-rlp = { version = "0.3.12", default-features = false }
 htif = { path = "./htif" }
 
+# Additional dependencies for statetest-measure
+thiserror = { version = "2.0", default-features = false }
+embedded-alloc = { version = "0.6.0", default-features = false }
+
 # Dependencies for jolt-sdk
-ark-serialize = "0.5.0"
+ark-serialize = { version = "0.5.0", default-features = false }
+ark-ff = { version = "0.5", default-features = false }
+ark-ec = { version = "0.5", default-features = false }
 jolt-sdk = { git = "https://github.com/a16z/jolt" }
 
 # Dependencies for revm-guest
@@ -46,4 +55,15 @@ ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-op
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev = "3fdd72f3286110b1958f020b984999326190f42f" }
 serde = { git = "https://github.com/LayerResearch/serde", rev = "5e4dce74da3b9ac15abd7896c88229cc580ace82" } # https://github.com/serde-rs/serde/pull/2924
-revm = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521
+# revm = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521
+# revm-statetest-types = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521
+# 
+# [patch."https://github.com/LayerResearch/revm"]
+revm = { path = "overrides/revm/crates/revm" }
+revm-bytecode = { path = "overrides/revm/crates/bytecode" }
+revm-context-interface = { path = "overrides/revm/crates/context/interface" }
+revm-database-interface = { path = "overrides/revm/crates/database/interface" }
+revm-handler = { path = "overrides/revm/crates/handler" }
+revm-interpreter = { path = "overrides/revm/crates/interpreter" }
+revm-statetest-types = { path = "overrides/revm/crates/statetest-types" }
+revm-database = { path = "overrides/revm/crates/database" }

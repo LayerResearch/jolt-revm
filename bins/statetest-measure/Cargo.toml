@@ -1,0 +1,46 @@
+[package]
+name = "statetest-measure"
+description = "RISC-V test executor for measuring EVM state transitions"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+no-jolt = []
+
+[dependencies]
+revm = { workspace = true, features = ["serde"] }
+revm-bytecode = { workspace = true }
+revm-state = { version = "=4.0.0", default-features = false, features = ["serde"] }
+once_cell = { workspace = true, features = ["critical-section"] }
+portable-atomic = { workspace = true, features = ["critical-section"] }
+critical-section = { workspace = true }
+serde = { workspace = true, default-features = false, features = ["derive", "alloc"] }
+serde_json = { workspace = true, default-features = false, features = ["alloc"] }
+bytes = { workspace = true, features = ["extra-platforms"]}
+embedded-alloc = { workspace = true, default-features = false, features = ["llff"] }
+htif = { workspace = true }
+thiserror = { workspace = true }
+
+# Direct dependencies not in workspace - keep as versions
+# Most revm sub-crates are re-exported by the main revm crate, so we don't need individual dependencies
+# Only keep inspector for the serde-json feature
+inspector = { version = "4.1.0", package = "revm-inspector", default-features = false, features = ["serde-json"] }
+# Use workspace for revm-statetest-types
+revm-statetest-types = { workspace = true }
+
+[target.'cfg(target_arch = "riscv32")'.dependencies]
+riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }
+
+[[bin]]
+name = "statetest-measure"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true 
