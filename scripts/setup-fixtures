@@ -1,0 +1,44 @@
+#!/bin/bash
+# This script is extracted from the revm/scripts/run-tests.sh script.
+
+# Version for the execution spec tests
+VERSION="v4.4.0"
+# Directories
+FIXTURES_DIR="execution-spec-tests"
+STABLE_DIR="$FIXTURES_DIR/stable"
+
+# URL and filenames
+FIXTURES_URL="https://github.com/ethereum/execution-spec-tests/releases/download"
+STABLE_TAR="fixtures_stable.tar.gz"
+
+
+# Download and extract a single fixture
+# Arguments: target directory, tar file name, label for logging
+download_and_extract() {
+    local target_dir="$1"
+    local tar_file="$2"
+    local label="$3"
+    local version="$4"
+
+    echo "Downloading ${label} fixtures..."
+    curl -L "${FIXTURES_URL}/${version}/${tar_file}" -o "${FIXTURES_DIR}/${tar_file}"
+    echo "Extracting ${label} fixtures..."
+     # strip-components=1 removes the first top level directory from the flepath
+     # This is needed because when we extract the tar, it is placed under an
+     # unnecessary "fixtures/" directory.
+    tar -xzf "${FIXTURES_DIR}/${tar_file}" --strip-components=1 -C "$target_dir"
+}
+
+# Download all fixtures
+download_fixtures() {
+    echo "Creating fixtures directory structure..."
+    mkdir -p "$STABLE_DIR"
+
+    download_and_extract "$STABLE_DIR" "$STABLE_TAR" "stable" "$VERSION"
+
+    echo "Cleaning up tar files..."
+    rm "${FIXTURES_DIR}/${STABLE_TAR}"
+    echo "Fixtures download and extraction complete."
+}
+
+download_fixtures

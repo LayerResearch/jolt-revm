@@ -1,24 +1,38 @@
 [workspace]
 resolver = "2"
-members = ["guest", "host", "htif"]
+members = ["guest", "host", "htif", "bins/statetest-measure"]
 default-members = ["host"]
 
 [workspace.dependencies]
 # Dependencies for revm
 getrandom = { version = "0.2.16", default-features = false }
 secp256k1 = { version = "0.30.0", default-features = false }
-revm = { version = "23.1.0", default-features = false }
+revm = { version = "27.0.2", default-features = false }
 once_cell = { version = "1.21.3", default-features = false }
-critical-section = { version = "1.2.0", default-features = false }
 portable-atomic = { version = "1.11.0", default-features = false }
+critical-section = { version = "1.2.0", default-features = false }
+embedded-alloc = { version = "0.6.0", default-features = false }
 serde = { version = "1.0.219", default-features = false }
 const-hex = { version = "1.14.1", default-features = false }
 bytes = { version = "1.10.1", default-features = false }
 alloy-rlp = { version = "0.3.12", default-features = false }
 htif = { path = "./htif" }
 
+# statetest-measure
+revm-statetest-types = { version = "8.0.3", default-features = false }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+thiserror = { version = "2.0", default-features = false }
+hash-db = { version = "0.15", default-features = false }
+plain_hasher = { version = "0.2", default-features = false }
+triehash = { version = "0.8", default-features = false }
+spin = { version = "0.10.0", default-features = false }
+default-env = { version = "0.1.1", default-features = false }
+
 # Dependencies for jolt-sdk
-ark-serialize = "0.5.0"
+ark-serialize = { version = "0.5.0", default-features = false }
+ark-ff = { version = "0.5", default-features = false }
+ark-ec = { version = "0.5", default-features = false }
+
 jolt-sdk = { git = "https://github.com/a16z/jolt" }
 
 # Dependencies for revm-guest
@@ -32,6 +46,7 @@ debug = 2
 opt-level = 0
 codegen-units = 1
 lto = false
+panic = "abort"
 
 [profile.release]
 debug = 2
@@ -39,6 +54,7 @@ opt-level = 0
 codegen-units = 1
 lto = false
 strip = false
+panic = "abort"
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
@@ -46,4 +62,5 @@ ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-op
 ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "v0.5.0-optimize-mul-u64" }
 radium = { git = "https://github.com/ferrilab/ferrilab", package = "radium", rev = "3fdd72f3286110b1958f020b984999326190f42f" }
 serde = { git = "https://github.com/LayerResearch/serde", rev = "5e4dce74da3b9ac15abd7896c88229cc580ace82" } # https://github.com/serde-rs/serde/pull/2924
-revm = { git = "https://github.com/LayerResearch/revm", rev = "8d302e0c4608a3ca9e4319065d28be1a067277ae" } # https://github.com/bluealloy/revm/pull/2521
+revm = { git = "file:///workspaces/jolt-revm/overrides/revm" } # https://github.com/bluealloy/revm/pull/2521
+revm-statetest-types = { git = "file:///workspaces/jolt-revm/overrides/revm" } # https://github.com/bluealloy/revm/pull/2521

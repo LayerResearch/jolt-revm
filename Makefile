@@ -6,11 +6,12 @@ help:
 
 bootstrap: ## Install required dependencies
 	scripts/bootstrap
+	scripts/setup-fixtures
 
 build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
 	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv32im-unknown-none-elf.ld') \
-	cargo build -p revm-guest --release --target riscv64im-unknown-none-elf --features no-jolt
+	cargo build -p revm-guest --release --target riscv32im-unknown-none-elf --features no-jolt
 
 clean-spike: ## Clean the build artifacts
 	cargo clean -p revm-guest --target riscv32im-unknown-none-elf
@@ -22,6 +23,14 @@ inspect-spike: ## Inspect the built binary (size, sections, symbols)
 
 run-spike: build-spike ## Run the binary in Spike emulator
 	spike --isa=rv32im ./target/riscv32im-unknown-none-elf/release/revm-guest
+
+build-measure: ## Build the statetest-measure binary to run in Spike
+	CARGO_PROFILE_RELEASE_LTO=false \
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/bins/statetest-measure/riscv-baremetal.ld') \
+	cargo build -p statetest-measure --release --target riscv32imac-unknown-none-elf --features no-jolt
+
+run-measure: build-measure ## Run the binary in Spike emulator
+	spike --isa=rv32imac ./target/riscv32im-unknown-none-elf/release/statetest-measure
 
 lint: ## Fix linting errors
 	cargo clippy --fix --allow-dirty --allow-staged -- -D warnings
