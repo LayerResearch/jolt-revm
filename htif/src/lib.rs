@@ -1,5 +1,6 @@
 #![no_std]
 
-mod htif;
+pub mod htif;
+mod macros;
 
 pub use htif::*;
