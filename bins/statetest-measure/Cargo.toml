@@ -1,0 +1,49 @@
+[package]
+name = "statetest-measure"
+description = "RISC-V test executor for measuring EVM state transitions"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+no-jolt = []
+trace = []
+std = []
+
+[dependencies]
+getrandom = { version = "0.2.16", features = ["custom"] }
+once_cell = { workspace = true, features = ["critical-section"] }
+portable-atomic = { workspace = true, features = ["critical-section"] }
+critical-section = { workspace = true }
+serde = { workspace = true, default-features = false, features = ["derive", "alloc"] }
+serde_json = { workspace = true, default-features = false, features = ["alloc"] }
+bytes = { workspace = true, features = ["extra-platforms"]}
+embedded-alloc = { workspace = true, default-features = false, features = ["llff"] }
+htif = { workspace = true }
+thiserror = { workspace = true, features = [] }
+alloy-rlp = { workspace = true, features = ["arrayvec"] }
+hash-db = { workspace = true }
+plain_hasher = { workspace = true }
+triehash = { workspace = true }
+spin = { workspace = true, features = ["portable-atomic", "spin_mutex"] }
+default-env = { workspace = true }
+
+revm = { workspace = true, features = ["serde"] }
+revm-statetest-types = { workspace = true }
+
+[target.'cfg(target_arch = "riscv32")'.dependencies]
+riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }
+
+[[bin]]
+name = "statetest-measure"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true 
+panic = "abort" 

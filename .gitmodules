@@ -1,0 +1,3 @@
+[submodule "overrides/revm"]
+	path = overrides/revm
+	url = https://github.com/LayerResearch/revm.git
