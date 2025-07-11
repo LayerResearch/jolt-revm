@@ -32,6 +32,9 @@ use std::sync::Arc;
 #[cfg(feature = "std")]
 use std::time::Instant;
 
+#[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
+use htif::eprintln;
+
 use core::{
     sync::atomic::{AtomicBool, Ordering},
     time::Duration,
