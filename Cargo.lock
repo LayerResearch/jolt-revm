@@ -3032,7 +3032,7 @@ dependencies = [
  "once_cell",
  "portable-atomic",
  "revm",
- "riscv",
+ "riscv 0.13.0",
  "serde",
 ]
 
@@ -3186,6 +3186,18 @@ dependencies = [
  "embedded-hal",
  "paste",
  "riscv-macros",
+ "riscv-pac",
+]
+
+[[package]]
+name = "riscv"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f1671c79a01a149fe000af2429ce9ccc8e58cdecda72672355d50e5536b363c"
+dependencies = [
+ "critical-section",
+ "embedded-hal",
+ "paste",
  "riscv-pac",
 ]
 
@@ -3598,7 +3610,7 @@ dependencies = [
  "portable-atomic",
  "revm",
  "revm-statetest-types",
- "riscv",
+ "riscv 0.14.0",
  "serde",
  "serde_json",
  "spin",
