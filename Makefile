@@ -26,11 +26,11 @@ run-spike: build-spike ## Run the binary in Spike emulator
 
 build-measure: ## Build the statetest-measure binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
-	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/bins/statetest-measure/riscv-baremetal.ld') \
-	cargo build -p statetest-measure --release --target riscv32imac-unknown-none-elf --features no-jolt
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/bins/statetest-measure/riscv-baremetal.ld\x1f-Cstrip=debuginfo') \
+	cargo build -p statetest-measure --release --target riscv64imac-unknown-none-elf --features no-jolt
 
 run-measure: build-measure ## Run the binary in Spike emulator
-	spike --isa=rv32imac ./target/riscv32im-unknown-none-elf/release/statetest-measure
+	spike --isa=rv64imac ./target/riscv64imac-unknown-none-elf/release/statetest-measure
 
 lint: ## Fix linting errors
 	cargo clippy --fix --allow-dirty --allow-staged -- -D warnings
