@@ -23,7 +23,6 @@ use serde_json::json;
 
 use crate::compat::Mutex;
 
-
 #[cfg(not(feature = "std"))]
 use alloc::sync::Arc;
 

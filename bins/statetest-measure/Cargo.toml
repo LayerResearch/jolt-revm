@@ -30,8 +30,8 @@ default-env = { workspace = true }
 revm = { workspace = true, features = ["serde"] }
 revm-statetest-types = { workspace = true }
 
-[target.'cfg(target_arch = "riscv32")'.dependencies]
-riscv = { version = "0.13.0", features = ["critical-section-single-hart"] }
+[target.'cfg(any(target_arch = "riscv32", target_arch = "riscv64"))'.dependencies]
+riscv = { workspace = true, features = ["critical-section-single-hart"] }
 
 [[bin]]
 name = "statetest-measure"
