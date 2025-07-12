@@ -54,7 +54,7 @@ fn panic(_info: &core::panic::PanicInfo) -> ! {
 // Users should implement their own main() function that returns i32
 #[cfg(feature = "no-jolt")]
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+pub extern "C" fn start() -> ! {
     // Initialize the heap
     init_heap();
     htif::read_fromhost();
@@ -65,3 +65,22 @@ pub extern "C" fn _start() -> ! {
     let exit_code = unsafe { main() };
     exit(exit_code as u32)
 }
+
+#[cfg(not(test))]
+use core::arch::global_asm;
+
+#[cfg(not(test))]
+global_asm!(
+    r#"
+    .section .text.boot
+    .globl _start
+_start:
+    # Load stack pointer from linker symbol
+    la sp, _STACK_PTR
+    # Call Rust entry point
+    call start
+    # Should never return, but just in case
+1:
+    j 1b
+    "#
+);

@@ -1,5 +1,5 @@
 MEMORY {
-  program (rwx) : ORIGIN = 0x80000000, LENGTH = 10485760
+  program (rwx) : ORIGIN = 0x80000000, LENGTH = 104857600
 }
 
 ENTRY(_start)

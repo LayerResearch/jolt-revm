@@ -10,19 +10,19 @@ bootstrap: ## Install required dependencies
 
 build-spike: ## Build the guest binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
-	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv-baremetal.ld') \
-	cargo build -p revm-guest --release --target riscv32imac-unknown-none-elf --features no-jolt
+	CARGO_ENCODED_RUSTFLAGS=$(shell printf -- '-Clink-arg=-T$(shell pwd)/guest/riscv-baremetal.ld\x1f-Cstrip=debuginfo') \
+	cargo build -p revm-guest --release --target riscv64imac-unknown-none-elf --features no-jolt
 
 clean-spike: ## Clean the build artifacts
-	cargo clean -p revm-guest --target riscv32imac-unknown-none-elf
+	cargo clean -p revm-guest --target riscv64imac-unknown-none-elf
 
 inspect-spike: ## Inspect the built binary (size, sections, symbols)
-	ls -lah ./target/riscv32imac-unknown-none-elf/release/revm-guest
-	readelf -hl ./target/riscv32imac-unknown-none-elf/release/revm-guest
-	nm ./target/riscv32imac-unknown-none-elf/release/revm-guest | grep -E '(tohost|fromhost)'
+	ls -lah ./target/riscv64imac-unknown-none-elf/release/revm-guest
+	readelf -hl ./target/riscv64imac-unknown-none-elf/release/revm-guest
+	nm ./target/riscv64imac-unknown-none-elf/release/revm-guest | grep -E '(tohost|fromhost)'
 
 run-spike: build-spike ## Run the binary in Spike emulator
-	spike --isa=rv32imac ./target/riscv32imac-unknown-none-elf/release/revm-guest
+	spike --isa=rv64imac ./target/riscv64imac-unknown-none-elf/release/revm-guest
 
 build-measure: ## Build the statetest-measure binary to run in Spike
 	CARGO_PROFILE_RELEASE_LTO=false \
