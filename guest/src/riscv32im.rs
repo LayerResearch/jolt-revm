@@ -1,7 +1,6 @@
 #![no_std]
 
 use embedded_alloc::LlffHeap as Heap;
-use htif::{htif_exit, htif_receive};
 
 #[cfg_attr(feature = "no-jolt", global_allocator)]
 static HEAP: Heap = Heap::empty();
@@ -18,7 +17,7 @@ pub fn init_heap() {
 }
 
 pub fn exit(code: u32) -> ! {
-    htif_exit(code)
+    htif::exit(code)
 }
 
 #[cfg_attr(feature = "no-jolt", panic_handler)]
@@ -36,7 +35,7 @@ fn panic(_info: &core::panic::PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! {
     // Initialize the heap
     init_heap();
-    htif_receive();
+    htif::read_fromhost();
     // Call the user's main function and exit with its return value
     extern "C" {
         fn main() -> i32;
