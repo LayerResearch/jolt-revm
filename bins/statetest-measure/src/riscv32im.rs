@@ -1,17 +1,32 @@
 use embedded_alloc::LlffHeap as Heap;
 use htif::println;
 
+use spin::Once;
+
+
 #[cfg_attr(feature = "no-jolt", global_allocator)]
 static HEAP: Heap = Heap::empty();
 
-// Initialize the heap
+// Allocate heap storage once, safely
+static HEAP_MEM: Once<&'static mut [u8]> = Once::new();
+
 pub fn init_heap() {
-    // Initialize the allocator BEFORE you use it
-    {
-        use core::mem::MaybeUninit;
-        const HEAP_SIZE: usize = 1024 * 1024 * 10; // 10MB
-        static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
-        unsafe { HEAP.init(HEAP_MEM.as_ptr() as usize, HEAP_SIZE) }
+    use core::mem::MaybeUninit;
+    const HEAP_SIZE: usize = 1024 * 1024 * 10; // 100MB instead of 50MB
+
+    let heap = HEAP_MEM.call_once(|| {
+        // Allocate a static uninitialized buffer
+        static mut RAW_MEM: MaybeUninit<[u8; HEAP_SIZE]> = MaybeUninit::uninit();
+
+        unsafe {
+            let ptr = RAW_MEM.as_mut_ptr() as *mut u8;
+            let slice = core::slice::from_raw_parts_mut(ptr, HEAP_SIZE);
+            slice
+        }
+    });
+
+    unsafe {
+        HEAP.init(heap.as_ptr() as usize, heap.len());
     }
 }
 

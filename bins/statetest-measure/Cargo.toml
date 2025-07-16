@@ -24,7 +24,7 @@ alloy-rlp = { workspace = true, features = ["arrayvec"] }
 hash-db = { workspace = true }
 plain_hasher = { workspace = true }
 triehash = { workspace = true }
-spin = { workspace = true, features = ["portable-atomic", "spin_mutex"] }
+spin = { workspace = true, features = ["portable-atomic", "spin_mutex", "once"] }
 default-env = { workspace = true }
 
 revm = { workspace = true, features = ["serde"] }

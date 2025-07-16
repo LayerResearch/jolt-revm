@@ -38,7 +38,7 @@ SECTIONS {
   . = ALIGN(8);
   _end = .;
 
-  . = . + 4096;
+  . = . + 1048576;
   _STACK_PTR = .;
 
   . = ALIGN(8);
